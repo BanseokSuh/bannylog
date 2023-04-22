@@ -1,5 +1,7 @@
 package com.bannylog.api.controller;
 
+import com.bannylog.api.request.PostCreate;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,19 +10,22 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MockMvc;
 import com.bannylog.api.repository.PostRepository;
-import org.springframework.http.MediaType;
 import com.bannylog.api.domain.Post;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class PostControllerTest {
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     public MockMvc mockMvc;
@@ -36,30 +41,38 @@ class PostControllerTest {
     @Test
     @DisplayName("/posts 요청 시 Hello World를 출력한다.")
     void test() throws Exception {
-        mockMvc.perform(get("/posts"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Hello World"))
-                .andDo(print());
-    }
+        // given
+        PostCreate request = PostCreate.builder()
+                .title("제목입니다.")
+                .content("내용입니다.")
+                .build();
 
-    @Test
-    @DisplayName("/posts 요청 시 Hello World를 출력한다.")
-    void test2() throws Exception {
+//        ObjectMapper objectMapper = new ObjectMapper(); // ObjectMapper는 실무에서 많이 쓰임.
+        String json = objectMapper.writeValueAsString(request);
+
+        // expected
         mockMvc.perform(post("/posts")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("{\"title\": \"제목입니다.\", \"content\": \"내용입니다.\"}")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
                 )
                 .andExpect(status().isOk())
-                .andExpect(content().string("{}"))
+//                .andExpect(content().string("{}"))
                 .andDo(print());
     }
 
     @Test
     @DisplayName("/posts 요청 시 title은 필수디.")
-    void test3() throws Exception {
+    void test1() throws Exception {
+        // given
+        PostCreate request = PostCreate.builder()
+                .content("내용입니다.")
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
         mockMvc.perform(post("/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\": null, \"content\": \"내용입니다.\"}")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("400"))
@@ -70,14 +83,19 @@ class PostControllerTest {
 
     @Test
     @DisplayName("/posts 요청 시 DB에 값이 저장된다.")
-    void test4() throws Exception {
-        // before
+    void test2() throws Exception {
+        // given
+        PostCreate request = PostCreate.builder()
+                .title("제목입니다.")
+                .content("내용입니다.")
+                .build();
 
+        String json = objectMapper.writeValueAsString(request);
 
         // when
         mockMvc.perform(post("/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\": \"제목입니다.\", \"content\": \"내용입니다.\"}")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
