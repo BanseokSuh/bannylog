@@ -1,11 +1,13 @@
 package com.bannylog.api.domain;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Post {
     @Id
