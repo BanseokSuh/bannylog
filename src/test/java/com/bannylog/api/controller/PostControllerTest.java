@@ -14,6 +14,7 @@ import com.bannylog.api.domain.Post;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -83,7 +84,7 @@ class PostControllerTest {
 
     @Test
     @DisplayName("/posts 요청 시 DB에 값이 저장된다.")
-    void test2() throws Exception {
+    void test3() throws Exception {
         // given
         PostCreate request = PostCreate.builder()
                 .title("제목입니다.")
@@ -99,11 +100,35 @@ class PostControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
+
         // then
         assertEquals(1L, postRepository.count());
 
         Post post = postRepository.findAll().get(0);
         assertEquals("제목입니다.", post.getTitle());
         assertEquals("내용입니다.", post.getContent());
+    }
+
+    @Test
+    @DisplayName("글 1개 조회")
+    void test4() throws Exception {
+        // given
+        Post post = Post.builder()
+                .title("123456789012345")
+                .content("bar")
+                .build();
+        postRepository.save(post);
+
+        // client 요구사항
+        // json 응답에서 title값 길이를 최대 10글자로 해주세요.
+
+        // expected
+        mockMvc.perform(get("/posts/{postId}", post.getId())
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(post.getId()))
+                .andExpect(jsonPath("$.title").value("1234567890"))
+                .andExpect(jsonPath("$.content").value("bar"))
+                .andDo(print());
     }
 }
