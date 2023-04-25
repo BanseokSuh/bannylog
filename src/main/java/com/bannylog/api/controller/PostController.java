@@ -5,13 +5,10 @@ import com.bannylog.api.response.PostResponse;
 import com.bannylog.api.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -33,17 +30,21 @@ public class PostController {
      * /posts/{postId} -> 글 한개만 조회
      */
     @GetMapping("/posts/{postId}")
-    public PostResponse get(@PathVariable(name = "postId") Long id) {
-        // Request 클래스성
-        // Response 클래스
-
-         PostResponse response = postService.get(id);
-        return response;
+    public PostResponse get(@PathVariable Long postId) {
+        return postService.get(postId);
     }
 
+    /**
+     * 여러 글 조회
+     */
+    @GetMapping("/posts")
+    public List<PostResponse> getList() {
+        return postService.getList();
+    }
+
+    // 서비스 정책에 맞는 응답 클래스 생성하자
 //    @GetMapping("/posts/{postId}/rss")
 //    public Post getRss(@PathVariable(name = "postId") Long id) {
 //        return postService.getRss(id);
 //    }
-    // 서비스 정책에 맞는 응답 클래스 생성하자
 }

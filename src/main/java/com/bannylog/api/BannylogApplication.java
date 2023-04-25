@@ -9,5 +9,4 @@ public class BannylogApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BannylogApplication.class, args);
 	}
-
 }
