@@ -5,6 +5,7 @@ import com.bannylog.api.response.PostResponse;
 import com.bannylog.api.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,8 +39,8 @@ public class PostController {
      * 여러 글 조회
      */
     @GetMapping("/posts")
-    public List<PostResponse> getList() {
-        return postService.getList();
+    public List<PostResponse> getList(Pageable pageable) {
+        return postService.getList(pageable);
     }
 
     // 서비스 정책에 맞는 응답 클래스 생성하자

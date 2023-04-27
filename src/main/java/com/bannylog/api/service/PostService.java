@@ -6,6 +6,7 @@ import com.bannylog.api.request.PostCreate;
 import com.bannylog.api.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,7 +43,12 @@ public class PostService {
          */
     }
 
-    public List<PostResponse> getList() {
+//    public Post getRss(Long id) {
+//        return postRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+//    }
+
+    public List<PostResponse> getList(Pageable pageable) {
 //        return postRepository.findAll().stream()
 //                .map(post -> PostResponse.builder()
 //                        .id(post.getId())
@@ -50,13 +56,16 @@ public class PostService {
 //                        .content(post.getContent())
 //                        .build())
 //                .collect(Collectors.toList());
-        return postRepository.findAll().stream()
+
+        // one-indexed-parameters: true
+        // web -> page 1일 경우 내부적으로 0으로 바꿈
+        return postRepository.findAll(pageable).stream()
                 .map(PostResponse::new)
                 .collect(Collectors.toList());
     }
 
-//    public Post getRss(Long id) {
-//        return postRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
-//    }
+    // 글이 너무 많은 경우
+    // 비용 많이, DB 뻗을 수 있음, 애플리케이션 서버 시간 및 트래픽 발생
+
+
 }
