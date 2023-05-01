@@ -3,10 +3,10 @@ package com.bannylog.api.service;
 import com.bannylog.api.domain.Post;
 import com.bannylog.api.repository.PostRepository;
 import com.bannylog.api.request.PostCreate;
+import com.bannylog.api.request.PostSearch;
 import com.bannylog.api.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +48,7 @@ public class PostService {
 //                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
 //    }
 
-    public List<PostResponse> getList(Pageable pageable) {
+    public List<PostResponse> getList(PostSearch postSearch) {
 //        return postRepository.findAll().stream()
 //                .map(post -> PostResponse.builder()
 //                        .id(post.getId())
@@ -59,7 +59,7 @@ public class PostService {
 
         // one-indexed-parameters: true
         // web -> page 1일 경우 내부적으로 0으로 바꿈
-        return postRepository.findAll(pageable).stream()
+        return postRepository.getList(postSearch).stream()
                 .map(PostResponse::new)
                 .collect(Collectors.toList());
     }
