@@ -3,6 +3,7 @@ package com.bannylog.api.service;
 import com.bannylog.api.domain.Post;
 import com.bannylog.api.repository.PostRepository;
 import com.bannylog.api.request.PostCreate;
+import com.bannylog.api.request.PostEdit;
 import com.bannylog.api.request.PostSearch;
 import com.bannylog.api.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
@@ -101,4 +102,56 @@ class PostServiceTest  {
 //        assertEquals("반삭이 제목 26", posts.get(4).getTitle());
     }
 
+    @Test
+    @DisplayName("글 제목 수정")
+    void test4() {
+        // given
+        Post post = Post.builder()
+                .title("반짝이")
+                .content("낙성대")
+                .build();
+
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("반속반속")
+                .content("낙성대")
+                .build();
+
+        // when
+        postService.edit(post.getId(), postEdit);
+
+        // then
+        Post changePost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id=" + post.getId()));
+
+        Assertions.assertEquals("반속반속", changePost.getTitle());
+        Assertions.assertEquals("낙성대", changePost.getContent());
+    }
+
+    @Test
+    @DisplayName("글 내용 수정")
+    void test5() {
+        // given
+        Post post = Post.builder()
+                .title("반짝이")
+                .content("낙성대")
+                .build();
+
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("반짝이정")
+                .content("아파트")
+                .build();
+
+        // when
+        postService.edit(post.getId(), postEdit);
+
+        // then
+        Post changePost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id=" + post.getId()));
+
+        Assertions.assertEquals("아파트", changePost.getContent());
+    }
 }

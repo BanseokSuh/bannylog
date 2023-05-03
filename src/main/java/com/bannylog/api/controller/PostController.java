@@ -1,6 +1,7 @@
 package com.bannylog.api.controller;
 
 import com.bannylog.api.request.PostCreate;
+import com.bannylog.api.request.PostEdit;
 import com.bannylog.api.request.PostSearch;
 import com.bannylog.api.response.PostResponse;
 import com.bannylog.api.service.PostService;
@@ -48,4 +49,9 @@ public class PostController {
 //    public Post getRss(@PathVariable(name = "postId") Long id) {
 //        return postService.getRss(id);
 //    }
+    @PatchMapping("/posts/{postId}")
+    public void edit(@PathVariable Long postId, @RequestBody @Valid PostEdit request) {
+        postService.edit(postId, request);
+    }
+
 }
