@@ -22,11 +22,16 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    /*
-          Controller -> WebPostService(response를 위한 작업) -> Repository
-                        PostService(외부 service와 통신하기 위한 작업)
+    /**
+     * Controller -> WebPostService(response를 위한 작업) -> Repository
+     *               PostService(외부 service와 통신하기 위한 작업)
      */
 
+
+    /**
+     * 글 쓰기
+     * @param postCreate
+     */
     public void write (PostCreate postCreate) {
          Post post = Post.builder()
                 .title(postCreate.getTitle())
@@ -36,6 +41,11 @@ public class PostService {
         postRepository.save(post);
     }
 
+    /**
+     * 글 단건 조회
+     * @param id
+     * @return postResponse
+     */
     public PostResponse get(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
@@ -47,25 +57,32 @@ public class PostService {
                 .build();
     }
 
-    public List<PostResponse> getList(PostSearch postSearch) {
-//        return postRepository.findAll().stream()
-//                .map(post -> PostResponse.builder()
-//                        .id(post.getId())
-//                        .title(post.getTitle())
-//                        .content(post.getContent())
-//                        .build())
-//                .collect(Collectors.toList());
 
-        // one-indexed-parameters: true
-        // web -> page 1일 경우 내부적으로 0으로 바꿈
+    /**
+     * 글 목록 조회(검색 + 페이징)
+     * @param postSearch
+     * @return
+     */
+    public List<PostResponse> getList(PostSearch postSearch) {
+        // application.yml 파일에서 one-indexed-parameters: true로 설정하면
+        // web에서 page를 1로 넘겨줄 경우 내부적으로 0으로 바꿈
+
+        // 글이 너무 많은 경우
+        // - 비용이 많이 듦
+        // - DB 뻗을 수 있음
+        // - 애플리케이션 서버 시간 및 트래픽 발생
+        // -> 페이징 처리
         return postRepository.getList(postSearch).stream()
                 .map(PostResponse::new)
                 .collect(Collectors.toList());
     }
 
-    // 글이 너무 많은 경우
-    // 비용 많이, DB 뻗을 수 있음, 애플리케이션 서버 시간 및 트래픽 발생
 
+    /**
+     * 글 수정
+     * @param id
+     * @param postEdit
+     */
     @Transactional
     public void edit(Long id, PostEdit postEdit) {
         Post post = postRepository.findById(id)
