@@ -38,7 +38,10 @@ class PostControllerTest {
     @Autowired
     private PostRepository postRepository;
 
-    @BeforeEach // 매 테스트 시 실행되는 함수 정의
+    /**
+     * 매 테스트 시 실행되는 함수 정의
+     */
+    @BeforeEach
     void clean() {
         postRepository.deleteAll();
     }

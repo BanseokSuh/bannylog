@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Slf4j
 @ControllerAdvice
 public class ExceptionController {
-    @ResponseBody // response body를 json으로 리턴
+
+    @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ErrorResponse invalidRequestHandler(MethodArgumentNotValidException e) {

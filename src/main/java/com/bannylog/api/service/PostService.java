@@ -20,13 +20,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService {
 
-    private final PostRepository postRepository;
-
     /**
-     * Controller -> WebPostService(response를 위한 작업) -> Repository
+     * Controller -> WebPostService(response를 위한 작업)       -> Repository
      *               PostService(외부 service와 통신하기 위한 작업)
      */
 
+    private final PostRepository postRepository;
 
     /**
      * 글 쓰기
@@ -57,11 +56,10 @@ public class PostService {
                 .build();
     }
 
-
     /**
      * 글 목록 조회(검색 + 페이징)
      * @param postSearch
-     * @return
+     * @return List<PostResponse>
      */
     public List<PostResponse> getList(PostSearch postSearch) {
         // application.yml 파일에서 one-indexed-parameters: true로 설정하면
@@ -76,7 +74,6 @@ public class PostService {
                 .map(PostResponse::new)
                 .collect(Collectors.toList());
     }
-
 
     /**
      * 글 수정

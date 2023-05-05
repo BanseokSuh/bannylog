@@ -21,5 +21,4 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .orderBy(QPost.post.id.desc())
                 .fetch();
     }
-
 }

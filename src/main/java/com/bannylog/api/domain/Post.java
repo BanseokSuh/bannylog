@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
