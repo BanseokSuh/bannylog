@@ -55,7 +55,8 @@ class PostControllerTest {
                 .content("내용입니다.")
                 .build();
 
-//        ObjectMapper objectMapper = new ObjectMapper(); // ObjectMapper는 실무에서 많이 쓰임.
+        // ObjectMapper는 실무에서 많이 쓰임.
+        // Java Object를 Json 형식의 문자열로 직렬화
         String json = objectMapper.writeValueAsString(request);
 
         // expected
@@ -64,7 +65,6 @@ class PostControllerTest {
                         .content(json)
                 )
                 .andExpect(status().isOk())
-//                .andExpect(content().string("{}"))
                 .andDo(print());
     }
 
@@ -72,6 +72,7 @@ class PostControllerTest {
     @DisplayName("/posts 요청 시 title은 필수디.")
     void test1() throws Exception {
         // given
+        // request 객체 생성 시 title 없이 생성
         PostCreate request = PostCreate.builder()
                 .content("내용입니다.")
                 .build();
@@ -109,8 +110,10 @@ class PostControllerTest {
                 .andDo(print());
 
         // then
+        // DB의 글 개수 확인
         assertEquals(1L, postRepository.count());
 
+        // 해당 글이 테스트 시 입력한 글인지 확인
         Post post = postRepository.findAll().get(0);
         assertEquals("제목입니다.", post.getTitle());
         assertEquals("내용입니다.", post.getContent());
@@ -124,10 +127,12 @@ class PostControllerTest {
                 .title("123456789012345")
                 .content("bar")
                 .build();
-        postRepository.save(post);
+        postRepository.save(post); // commit
+
+        System.out.println("post ::" + post.getTitle());
 
         // client 요구사항
-        // json 응답에서 title값 길이를 최대 10글자로 해주세요.
+        // json 응답에서 title값 길이를 최대 10글자로 해주세요. -> 응답 클래스 분리
 
         // expected
         mockMvc.perform(get("/posts/{postId}", post.getId())
@@ -139,10 +144,16 @@ class PostControllerTest {
                 .andDo(print());
     }
 
+    /**
+     * IntStream.range().mapToObj().collect()
+     *
+     * @throws Exception
+     */
     @Test
     @DisplayName("글 여러개 조회")
     void test5() throws Exception {
         // given
+        // 1~20을 순회하며 게시글 작성
         List<Post> requestPosts = IntStream.range(1, 20)
                 .mapToObj(i -> Post.builder()
                         .title("반삭이 제목 " + i)
@@ -150,11 +161,7 @@ class PostControllerTest {
                         .build())
                 .collect(Collectors.toList());
 
-//        System.out.println("requestPosts :" + requestPosts.toString());
         postRepository.saveAll(requestPosts);
-
-        // client
-        // json 응답에서 title값 길이를 최대 10글자로 해주세요. -> 응답 클래스 분리
 
         // expected
         mockMvc.perform(get("/posts?page=1&size=10")
@@ -165,7 +172,6 @@ class PostControllerTest {
                 .andExpect(jsonPath("$[0].content").value("낙성대 19"))
                 .andDo(print());
     }
-
 
     @Test
     @DisplayName("페이지를 0으로 요청해면 첫 페이지를 가져온다.")

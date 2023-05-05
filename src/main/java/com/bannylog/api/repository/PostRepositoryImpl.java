@@ -13,6 +13,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
+    // 상위 클래스의 메서드 재정의
     @Override
     public List<Post> getList(PostSearch postSearch) {
         return jpaQueryFactory.selectFrom(QPost.post)

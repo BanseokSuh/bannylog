@@ -9,7 +9,6 @@ import lombok.Getter;
  */
 
 @Getter
-//@RequiredArgsConstructor
 public class PostResponse {
 
     private final Long id;
@@ -23,6 +22,8 @@ public class PostResponse {
         this.content = post.getContent();
     }
 
+    // client 요구사항
+    // json 응답에서 title 값의 길이를 최대 10글자로 해주세요. -> 응답 클래스 분리
     @Builder
     public PostResponse(Long id, String title, String content) {
         this.id = id;

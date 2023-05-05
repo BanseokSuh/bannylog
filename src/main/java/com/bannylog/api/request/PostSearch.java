@@ -11,6 +11,7 @@ public class PostSearch {
 
     private static final int MAX_SIZE = 2000;
 
+    // 해당 속성의 default값을 지정해줄 수 있음
     @Builder.Default
     private Integer page = 1;
 
