@@ -85,6 +85,11 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
 
+        /**
+         * PostEditor 사용 이유
+         * - 필드가 늘어날 경우에 처리하기 어렵기 때문에
+         * - 변경하고 싶지 않은 필드를 null로 전달했을 때, 해당 필드는 원래 값으로 유지하기 위해서
+         */
         PostEditor.PostEditorBuilder editorBuilder = post.toEditor();
 
         PostEditor postEditor = editorBuilder.title(postEdit.getTitle())
@@ -92,5 +97,10 @@ public class PostService {
                 .build();
 
         post.edit(postEditor);
+//        post.edit(
+//                postEdit.getTitle() != null ? postEdit.getTitle() : post.getTitle(),
+//                postEdit.getContent() != null ? postEdit.getContent() : post.getTitle()
+//        );
     }
+
 }
