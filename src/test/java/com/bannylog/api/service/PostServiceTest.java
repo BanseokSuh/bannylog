@@ -6,7 +6,6 @@ import com.bannylog.api.request.PostCreate;
 import com.bannylog.api.request.PostEdit;
 import com.bannylog.api.request.PostSearch;
 import com.bannylog.api.response.PostResponse;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,7 +46,7 @@ class PostServiceTest  {
         postService.write(postCreate);
 
         // then
-        Assertions.assertEquals(1L, postRepository.count());
+        assertEquals(1L, postRepository.count());
         Post post = postRepository.findAll().get(0);
         assertEquals("제목입니다.", post.getTitle());
         assertEquals("내용입니다.", post.getContent());
@@ -125,8 +124,8 @@ class PostServiceTest  {
         Post changePost = postRepository.findById(post.getId())
                 .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id=" + post.getId()));
 
-        Assertions.assertEquals("반속반속", changePost.getTitle());
-        Assertions.assertEquals("낙성대", changePost.getContent());
+        assertEquals("반속반속", changePost.getTitle());
+        assertEquals("낙성대", changePost.getContent());
     }
 
     @Test
@@ -151,7 +150,24 @@ class PostServiceTest  {
         // then
         Post changePost = postRepository.findById(post.getId())
                 .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id=" + post.getId()));
-        Assertions.assertEquals("아파트", changePost.getContent());
+        assertEquals("아파트", changePost.getContent());
+    }
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void test6() {
+        // given
+        Post post = Post.builder()
+                .title("반짝이")
+                .content("낙성대")
+                .build();
+        postRepository.save(post);
+
+        // when
+        postService.delete(post.getId());
+
+        // then
+        assertEquals(0, postRepository.count());
     }
 
     @Test
@@ -175,7 +191,7 @@ class PostServiceTest  {
         // then
         Post changePost = postRepository.findById(post.getId())
                 .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id=" + post.getId()));
-        Assertions.assertEquals("반짝이", changePost.getTitle());
-        Assertions.assertEquals("아파트", changePost.getContent());
+        assertEquals("반짝이", changePost.getTitle());
+        assertEquals("아파트", changePost.getContent());
     }
 }
