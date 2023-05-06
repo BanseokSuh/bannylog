@@ -1,6 +1,7 @@
 package com.bannylog.api.service;
 
 import com.bannylog.api.domain.Post;
+import com.bannylog.api.exception.PostNotFound;
 import com.bannylog.api.repository.PostRepository;
 import com.bannylog.api.request.PostCreate;
 import com.bannylog.api.request.PostEdit;
@@ -16,8 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class PostServiceTest  {
@@ -171,6 +171,59 @@ class PostServiceTest  {
     }
 
     @Test
+    @DisplayName("글 1개 조회 - 존재하지 않는 글")
+    void test7() {
+        // given
+        Post post = Post.builder()
+                .title("반삭반삭")
+                .content("낙성대")
+                .build();
+        postRepository.save(post);
+
+        // expected
+        assertThrows(PostNotFound.class, () -> {
+            postService.get(post.getId() + 1L);
+        });
+    }
+
+    @Test
+    @DisplayName("게시글 삭제 - 존재하지 않는 글")
+    void test8() {
+        // given
+        Post post = Post.builder()
+                .title("반짝이")
+                .content("낙성대")
+                .build();
+        postRepository.save(post);
+
+        // expected
+        assertThrows(PostNotFound.class, () -> {
+            postService.delete(post.getId() + 1L);
+        });
+    }
+
+    @Test
+    @DisplayName("글 내용 수정 - 존재하지 않는 글")
+    void test9() {
+        // given
+        Post post = Post.builder()
+                .title("반짝이")
+                .content("낙성대")
+                .build();
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("반짝이정")
+                .content("아파트")
+                .build();
+
+        // expected
+        assertThrows(PostNotFound.class, () -> {
+            postService.edit(post.getId() + 1L, postEdit);
+        });
+    }
+
+    @Test
     @DisplayName("글 내용 수정")
     void test10() {
         // given
@@ -194,4 +247,6 @@ class PostServiceTest  {
         assertEquals("반짝이", changePost.getTitle());
         assertEquals("아파트", changePost.getContent());
     }
+
+
 }
