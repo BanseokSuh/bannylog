@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class PostControllerTest {
 
-    @Autowired
+    @Autowired // ioc controller에 등록된 빈을 찾아서 주입해준다.
     private ObjectMapper objectMapper;
 
     @Autowired

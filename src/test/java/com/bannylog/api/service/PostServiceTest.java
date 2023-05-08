@@ -83,9 +83,7 @@ class PostServiceTest  {
                         .content("낙성대 " + i)
                         .build())
                 .collect(Collectors.toList());
-
         postRepository.saveAll(requestPosts);
-
 
 //        Pageable pageable = PageRequest.of(0, 5, by(Direction.DESC, "id"));
         PostSearch postSearch = PostSearch.builder()
@@ -98,7 +96,6 @@ class PostServiceTest  {
         // then
         assertEquals(10L, posts.size());
         assertEquals("반삭이 제목 19", posts.get(0).getTitle());
-//        assertEquals("반삭이 제목 26", posts.get(4).getTitle());
     }
 
     @Test
@@ -109,7 +106,6 @@ class PostServiceTest  {
                 .title("반짝이")
                 .content("낙성대")
                 .build();
-
         postRepository.save(post);
 
         PostEdit postEdit = PostEdit.builder()
@@ -136,7 +132,6 @@ class PostServiceTest  {
                 .title("반짝이")
                 .content("낙성대")
                 .build();
-
         postRepository.save(post);
 
         PostEdit postEdit = PostEdit.builder()
@@ -181,6 +176,7 @@ class PostServiceTest  {
         postRepository.save(post);
 
         // expected
+        // 특정 에러를 리턴하는 지 확인하는 테스트 케이스
         assertThrows(PostNotFound.class, () -> {
             postService.get(post.getId() + 1L);
         });

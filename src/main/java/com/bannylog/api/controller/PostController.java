@@ -60,6 +60,8 @@ public class PostController {
      *
      * @Autowired
      * - 필요한 의존 객체의 타입에 해당하는 빈 찾아 주입
+     * - 생성자 주입, 세터 주입, 필드 주입을 통해 DI를 구현할 수 있음
+     * - 생성자 주입이 recommended
      */
 
     private final PostService postService;
