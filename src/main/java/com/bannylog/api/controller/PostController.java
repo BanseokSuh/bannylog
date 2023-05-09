@@ -1,6 +1,5 @@
 package com.bannylog.api.controller;
 
-import com.bannylog.api.exception.InvalidRequest;
 import com.bannylog.api.request.PostCreate;
 import com.bannylog.api.request.PostEdit;
 import com.bannylog.api.request.PostSearch;
@@ -73,9 +72,12 @@ public class PostController {
      */
     @PostMapping("/posts")
     public void post(@RequestBody @Valid PostCreate request) {
-        if (request.getTitle().contains("바보")) {
-            throw new InvalidRequest();
-        }
+        // 데이터를 꺼내서 검증하는 것은 좋지 않음
+//        if (request.getTitle().contains("바보")) {
+//            throw new InvalidRequest();
+//        }
+        request.validate();
+
         // Case1. 저장한 데이터 Entity -> respons로 응답
         // Case2. postId만 리턴 => Client에서는 해당 id로 글 조회 api를 통해 데이터 수신
         // Case3. 응답 필요 없음 (best), Clent에서 데이터를 잘 관리함

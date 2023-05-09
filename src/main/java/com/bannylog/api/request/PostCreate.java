@@ -1,5 +1,6 @@
 package com.bannylog.api.request;
 
+import com.bannylog.api.exception.InvalidRequest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,5 +44,11 @@ public class PostCreate {
                 .title(title)
                 .content(content)
                 .build();
+    }
+
+    public void validate() {
+        if (title.contains("바보")) {
+            throw new InvalidRequest();
+        }
     }
 }
