@@ -39,8 +39,18 @@ public class ExceptionController {
 
         ErrorResponse body = ErrorResponse.builder()
                 .code(String.valueOf(statusCode))
+                .validation(e.getValidation())
                 .message(e.getMessage())
                 .build();
+
+        // 응답 json validation -> title : 제목에 바보를 포함할 수 없습니다.
+        // Not nice
+//        if(e instanceof InvalidRequest) {
+//            InvalidRequest invalidRequest = (InvalidRequest) e;
+//            String fieldName = invalidRequest.getFieldName();
+//            String message = invalidRequest.getMessage();
+//            body.addValidation(fieldName, message);
+//        }
 
         ResponseEntity<ErrorResponse> response = ResponseEntity.status(statusCode)
                 .body(body);

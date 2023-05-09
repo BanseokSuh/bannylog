@@ -48,7 +48,7 @@ class PostControllerTest {
 
     @Test
     @DisplayName("/posts 요청 시 Hello World를 출력한다.")
-    void test() throws Exception {
+    void test1() throws Exception {
         // given
         PostCreate request = PostCreate.builder()
                 .title("제목입니다.")
@@ -70,7 +70,7 @@ class PostControllerTest {
 
     @Test
     @DisplayName("/posts 요청 시 title은 필수디.")
-    void test1() throws Exception {
+    void test2() throws Exception {
         // given
         // request 객체 생성 시 title 없이 생성
         PostCreate request = PostCreate.builder()
