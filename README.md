@@ -79,8 +79,18 @@
 4. json에 대한 검증 방법
   - jsonPath("$.필드").value("값") 으로 json에 대한 검증이 가능
   - 배열, 객체에 대한 검증 가능
-
 <br>
+
+## 에러 처리
+- 예외 처리 클래스(ExceptionController)에 @ControllerAdvice를 달면 Spring Bean으로 주입됨
+- BindingResult를 제거하고 요청을 받으면, 에러 발생 시 @ControllerAdvice가 달린 ExceptionController로 요청이 넘어옴
+- ExceptionController 내에서 예외 처리
+- ExceptionController에서 예외 리턴 시 hashMap이 아닌 응답 클래스(ErrorResponse)로 리턴하는 것이 좋음
+- 예외 리턴 시 어떤 필드가 잘못되었는지도 보내주는 것이 좋음
+  - 응답 클래스에 해당 정보 추가하는 메서드 정의
+
+
+
 <br>
 <br>
 <br>
