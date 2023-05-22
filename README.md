@@ -88,11 +88,31 @@
 - ExceptionController에서 예외 리턴 시 hashMap이 아닌 응답 클래스(ErrorResponse)로 리턴하는 것이 좋음
 - 예외 리턴 시 어떤 필드가 잘못되었는지도 보내주는 것이 좋음
   - 응답 클래스에 해당 정보 추가하는 메서드 정의
-
-
-
 <br>
+
+## 데이터 저장
+- Service layer를 생성해서 거기에서 repository를 호출하여 데이터 저장하는 것이 좋음
+- PostRepository는 interfacd로써 JpaRapository를 상속받음
+- PostService에서 PostRepository 주입 시에는 생성자 injection으로 주입할 것
+- 직접 생성자를 만들어서 주입할 수도 있지만, final로 생성된 필드는 Lombok을 통해 @RequiredArgsConstructor로 생성자 injection이 가능
+- PostController에서 PostService를 주입받을 때도 위와 같이 할 것
+- Field injection is not recommended
+- Test 코드 외에는 사용하지 않는 것을 추천
+- PostController -> PostService -> PostRepository 방향으로 호출, 최종적으로 넘어온 값을 PostEntity으로 변환해서 저장
+- ControllerTest에서 어플리케이션의 전반적인 테스트를 할 때는 @WebMvcTest 보다는 @SpringBootTest를 달아야함
+- @SpringBootTest를 달면 MockMvc에 대한 빈 주입이 안 됨
+- @SpringBootTest와 함께 @AutoConfigureMockMvc를 달면 됨
+- 전체 테스트를 돌릴 때 각각 테스트 메서드들이 서로 영향을 주지 않기 위해서는 ControllerTest에서 각 메서드들에서 PostRepository를 초기화해야 함
+- @BeforeEach는 각각의 테스트 메서드들이 실행되기 전에 해당 함수 실행
+```java
+@BeforeEach
+void clean() {
+  postRepository.deleteAll();
+}
+```
 <br>
+
+
 <br>
 <br>
 <br>
