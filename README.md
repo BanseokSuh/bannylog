@@ -45,6 +45,7 @@
 - mockMvc를 주입받기 위해서는 해당 테스트 Controller에 @WebMvcTest 어노테이션을 기입
 - mockMvc
   - 웹 어플리케이션을 서버에 배포하지 않고 테스트용 mvc 환경을 만들어 요청, 전송, 응답기능을 제공해주는 유틸리티 클래스
+
 <br>
 
 ## Note
@@ -55,6 +56,7 @@
 - Lombok
   - 반복되는 메서드를 Annotation을 사용해서 자동으로 작성해주는 Java 라이브러리
   - DTO Class에서 @Getter, @Setter, @ToString 등 기계적으로 작성해야 하는 메서드들을 Annotation으로 작성하여 코드 다이어트가 됨
+
 <br>
 
 ## 데이터 검증
@@ -79,6 +81,7 @@
 4. json에 대한 검증 방법
   - jsonPath("$.필드").value("값") 으로 json에 대한 검증이 가능
   - 배열, 객체에 대한 검증 가능
+
 <br>
 
 ## 에러 처리
@@ -88,6 +91,7 @@
 - ExceptionController에서 예외 리턴 시 hashMap이 아닌 응답 클래스(ErrorResponse)로 리턴하는 것이 좋음
 - 예외 리턴 시 어떤 필드가 잘못되었는지도 보내주는 것이 좋음
   - 응답 클래스에 해당 정보 추가하는 메서드 정의
+
 <br>
 
 ## 데이터 저장
@@ -110,6 +114,7 @@ void clean() {
   postRepository.deleteAll();
 }
 ```
+
 <br>
 
 ## 클래스 분리
@@ -158,6 +163,8 @@ PostCreate postCreate = PostCreate.builder()
   - 객체의 불변성
 
 <br>
+
+
 <br>
 <br>
 <br>
