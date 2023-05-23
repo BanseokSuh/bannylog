@@ -103,7 +103,7 @@
 - @SpringBootTest를 달면 MockMvc에 대한 빈 주입이 안 됨
 - @SpringBootTest와 함께 @AutoConfigureMockMvc를 달면 됨
 - 전체 테스트를 돌릴 때 각각 테스트 메서드들이 서로 영향을 주지 않기 위해서는 ControllerTest에서 각 메서드들에서 PostRepository를 초기화해야 함
-- @BeforeEach는 각각의 테스트 메서드들이 실행되기 전에 해당 함수 실행
+- @BeforeEach가 붙은 함수는 각각의 테스트 메서드들이 실행되기 전에 실행
 ```java
 @BeforeEach
 void clean() {
@@ -112,10 +112,53 @@ void clean() {
 ```
 <br>
 
+## 클래스 분리
+- ObjectMapper는 Jackson 라이브러리가 제공하는 객체
+- Jackson은 객체를 Json으로 변환해주는 라이브러리
+
+
+### Builder 패턴
+- 일반적으로 인스턴스 생성 시에, 생성자의 파라미터 순서를 지켜서 생성함
+- 하지만 순서가 바뀔 시에 데이터가 바뀌어서 생성될 수 있음
+- Builder 패턴을 사용하면 인스턴스 생성 시에 프로퍼티를 직접 찾아 생성하기 때문에 순서가 바뀌어도 문제 없음
+- @Builder는 Lombok에서 제공해줌
+- @Builder는 클래스 위에 달 수 있지만, 그렇게 될 경우 클래스의 다른 어노테이션이나 각각의 필드가 final인지 아닌지에 따라 해당 클래스에 모순이 발생해 작동하지 않을 수 있음
+- @Builder를 클래스에 달고, 클래스 안에 빈 생성자가 있으면 runtime 에러 발생
+- 고로 @Builder는 생성자에 다는 것이 안전함
+
+```java
+public class PostCreate {
+  private String title;
+  private String content;
+  
+  @Builder
+  public PostCreate(String title, String content) {
+    this.title = title;
+    this.content = content;
+  };
+};
+```
+
+- 일반적 인스턴스 생성
+```java
+PostCreate postCreate = new PostCreate("제목", "내용"); // 제목과 내용이 바뀌면 바뀐대로 인스턴스 생성됨
+```
+
+- Builder 패턴으로 인스턴스 생성
+```java
+PostCreate postCreate = PostCreate.builder()
+  .title("제목")
+  .content("내용")
+  .build();
+```
+
+- 장점
+  - 가독성이 좋음
+  - 필요한 값만 받을 수 있음
+  - 객체의 불변성
 
 <br>
 <br>
 <br>
 <br>
 <br>
-
