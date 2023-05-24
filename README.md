@@ -26,7 +26,6 @@
 ## Controller
 
 - @Controller - html의 주소를 리턴함
-- @RestController - json 데이터를 리턴
 - SSR -> jsp, thymeleaf, mustache, freemarker
   - html rendering
 - SPA
@@ -164,8 +163,23 @@ PostCreate postCreate = PostCreate.builder()
 
 <br>
 
+## Test
+- ControllerTest와 ServiceTest는 별도로 작성해야 함
+- ServiceTest에 @SpringBootTest를 달아야 Service가 주입됨
+- 각 테스트 함수는 서로에 간섭하지 않아야 함
+- 하나의 테스트 함수에서
+  - given: 어떤 데이터가 주어지고,
+  - when: MockMvc를 통해 실행했을 때,
+  - then: 이런 결과가 나올 것이다
+  - 틀을 잡고 하면 마음이 편함
+  - expected: (when + then)의 의미
+- 인스턴스 생성할 때는 왠만하면 빌더 패턴으로 생성
+
+
 
 <br>
 <br>
 <br>
 <br>
+
+<!-- 응답클래스 분리 -->
