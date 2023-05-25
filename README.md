@@ -175,9 +175,15 @@ PostCreate postCreate = PostCreate.builder()
   - expected: (when + then)의 의미
 - 인스턴스 생성할 때는 왠만하면 빌더 패턴으로 생성
 
-
-
 <br>
+
+## 응답 클래스 분리
+- 제목의 10글자만을 리턴해달라는 요구사항이 생긴다면, 엔티티에 getTitle과 같은 getter 메서드에 넣으면 안 됨
+- -> 서비스 정책에 맞는 응답 클래스를 분리하는 것이 좋음
+- Service에서 빌더 패턴으로 응답 클래스의 인스턴스 생성
+- Service layer에서 Entity를 Response class로 변환하는 것이 맞냐는 이야기도 있음. 취향 존중
+- requestDto, responseDto를 생성해서 요청, 응답 클래스 나누자
+
 <br>
 <br>
 <br>
