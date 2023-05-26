@@ -232,10 +232,24 @@ public class PostService {
 
 ```
 
-
-
-
 <br>
+
+## h2 console
+- application.yml 파일에 다음과 같은 설정을 하면 h2 console에 접속할 수 있음
+```java
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  datasource:
+    url: jdbc:h2:mem:bannylog //
+    username: sa //
+    password: //
+    driver-class-name: org.h2.Driver //
+```
+
 <br>
 
 <!-- 응답클래스 분리 -->
