@@ -185,6 +185,56 @@ PostCreate postCreate = PostCreate.builder()
 - requestDto, responseDto를 생성해서 요청, 응답 클래스 나누자
 
 <br>
+
+## 여러 게시글 조회 - pagenation
+- control + alt + O => optimizing import
+- .stream().map().collect(Collector.toList()); 를 통해 entity -> response class로 변환 
+```java
+
+public class PostService {
+    ...
+    public List<PostResponse> getList() {
+        return postRepository.findAll().stream()
+                .map(post -> PostResponse.builder()
+                  .id(post.getId())
+                  .title(post.getTitle())
+                  .build())
+                .collect(Collector.toList());
+    }
+
+```
+
+- 더 간소화한 코드
+```java
+// 1) postRepository에서 생성자 오버로딩
+@Getter
+public class PostResponse {
+    ...
+    // 생성자 오버로딩
+    public PostResponse(Post post) {
+        this.id = post.getId();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+    }
+    ...
+}
+
+// 2) postService에서는 post를 인자로 넘겨 response class에서 생성자 오버로딩을 통해 entity를 response class로 변환
+public class PostService {
+    ...
+    public List<PostResponse> getList() {
+        return postRepository.findAll().stream()
+                .map(PostResponse::new) // .map(new PostResponse(post))의 간소화 버전
+                .collect(Collectors.toList());
+    }
+    ...
+}
+
+```
+
+
+
+
 <br>
 <br>
 
