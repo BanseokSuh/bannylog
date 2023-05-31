@@ -186,7 +186,7 @@ PostCreate postCreate = PostCreate.builder()
 
 <br>
 
-## 여러 게시글 조회 - pagenation
+## 여러 게시글 조회
 - control + alt + O => optimizing import
 - .stream().map().collect(Collector.toList()); 를 통해 entity -> response class로 변환 
 ```java
@@ -252,4 +252,30 @@ spring:
 
 <br>
 
-<!-- 응답클래스 분리 -->
+## Pagination
+- 한 번에 글이 너무 많이 조회되면
+  - 비용이 많이 듦
+  - DB가 뻗을 수 있음
+  - 트래픽 비용이 발생함
+  -> pagination의 필요성이 충분함
+  
+
+- offset: 어디서 부터 가져올지
+- limit: 행을 얼마나 가져올지
+
+```SELECT * FROM 테이블명 ORDERS LIMIT 숫자(A) OFFSET 숫자(B)```
+
+- 위 쿼리는 (B+1) 행부터 A 행 만큼 출력함
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
