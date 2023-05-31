@@ -77,7 +77,6 @@ public class PostController {
 //            throw new InvalidRequest();
 //        }
         request.validate();
-
         // Case1. 저장한 데이터 Entity -> respons로 응답
         // Case2. postId만 리턴 => Client에서는 해당 id로 글 조회 api를 통해 데이터 수신
         // Case3. 응답 필요 없음 (best), Clent에서 데이터를 잘 관리함
