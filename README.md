@@ -267,6 +267,16 @@ spring:
 
 - 위 쿼리는 (B+1) 행부터 A 행 만큼 출력함
 
+- cmd + e = 최근 작업한 파일 목록창
+
+- @PageableDefault
+  - SpringBoot에서는 page값이 기본 0으로 셋팅
+  - @PageableDefault 어노테이션을 사용하면 웹에서 넘어온 page=1이 내부에서 page=0으로 치환되어 첫번째 페이지의 데이터 정상적으로 조회
+  - application.yml에서 data > web > pageable > default-page-size = 5로 설정하면 requestParam에 size를 전달하지 않도고 기본 사이즈만큼의 데이터를 조회할 수 있음
+  - 혹시 작동하지 않는다면, PostController에 @PageableDefault를 사용하고 있는지 확인하자
+  - 한 페이지당 10개씩, 20개씩 보기 기능이 있으면 size를 front에서 전달하는게 맞지만, 보통은 서버에서 관리
+  - 별점순, 등록순과 같은 기능이 있다면 RequestParam 그에 따라 달라짐
+  - 인덱싱을 고려해야 함
 
 <br>
 <br>
